@@ -41,7 +41,7 @@ def getActressPhoto(html: str) -> dict:  # //*[@id="star_qdt"]/li/a/img
         actresses = ar.findall(item)
         star_photos = {}
         for i in actresses:
-            star_photos[i[1]] = getOnePhoto('https://javdb.com' + i[0])
+            star_photos[i[1]] = getOnePhoto('https://javdb30.com' + i[0])
         return star_photos
     else:
         return {}
@@ -169,7 +169,7 @@ def getSeries(a: str) -> str:
 
 def main(keyword: str) -> Metadata:
     keyword = keyword.upper()
-    query_result = get_html('https://javdb.com/search?q=' + keyword + '&f=all')
+    query_result = get_html('https://javdb30.com/search?q=' + keyword + '&f=all')
 
     html = etree.fromstring(query_result, etree.HTMLParser())  # //table/tr[1]/td[1]/text()
     # javdb sometime returns multiple results,
@@ -184,7 +184,7 @@ def main(keyword: str) -> Metadata:
         ids = html.xpath('//*[@id="videos"]/div/div/a/div[contains(@class, "uid")]/text()')
         correct_url = urls[ids.index(keyword)]
 
-    detail_page = get_html('https://javdb.com' + correct_url, params={'locale': 'zh'})
+    detail_page = get_html('https://javdb30.com' + correct_url, params={'locale': 'zh'})
 
     # no cut image by default
     # If gray image exists ,then replace with normal cover
@@ -217,7 +217,7 @@ def main(keyword: str) -> Metadata:
         'genres': getGenres(detail_page),
         'label': getLabel(detail_page),
         # 'star_photos': getActressPhoto(detail_page),
-        'source': 'https://javdb.com' + correct_url,
+        'source': 'https://javdb30.com' + correct_url,
         'provider': 'javdb',
         'series': getSeries(detail_page),
     })
