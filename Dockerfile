@@ -1,4 +1,4 @@
-nFROM xjasonlyu/face-recognition:latest
+FROM xjasonlyu/face-recognition:latest
 LABEL org.opencontainers.image.source="https://github.com/xjasonlyu/avdc-api"
 
 WORKDIR /app
