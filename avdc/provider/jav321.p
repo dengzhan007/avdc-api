@@ -170,7 +170,6 @@ def main(keyword: str) -> Metadata:
         }
     return Metadata(**metadata)
 
-
 if __name__ == '__main__':
     # print(main('miae-003'))
     print(main('ABW-073'))
