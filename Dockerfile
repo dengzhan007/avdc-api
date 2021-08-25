@@ -1,5 +1,5 @@
 FROM xjasonlyu/face-recognition:latest
-LABEL org.opencontainers.image.source="https://github.com/xjasonlyu/avdc-api"
+LABEL org.opencontainers.image.source="https://github.com/dengzhan007/avdc-api"
 
 WORKDIR /app
 COPY . /app
