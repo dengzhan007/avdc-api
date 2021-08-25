@@ -10,16 +10,9 @@ from avdc.model.actress import Actress
 from avdc.model.cover import Cover
 from avdc.model.metadata import Metadata
 from avdc.provider import arzon
-from avdc.provider import avsox
-from avdc.provider import dlsite
-from avdc.provider import fanza
 from avdc.provider import fc2
-from avdc.provider import jav321
 from avdc.provider import javbus
 from avdc.provider import javdb
-from avdc.provider import javlib
-from avdc.provider import mgstage
-from avdc.provider import xcity
 from avdc.utility.image import (cropImage,
                                 autoCropImage,
                                 getRawImageSize,
@@ -65,19 +58,12 @@ _s_list = ('ara', 'bnjc', 'dcv', 'endx', 'endw', 'eva', 'ezd', 'gana',
 
 _providers = {
     'arzon': arzon.main,
-    'avsox': avsox.main,
-    'fanza': fanza.main,
     'fc2': fc2.main,
     'javdb': javdb.main,
     'javbus': javbus.main,
-    'mgstage': mgstage.main,
-    'jav321': jav321.main,
-    'xcity': xcity.main,
-    'javlib': javlib.main,
-    'dlsite': dlsite.main,
 }
 
-_priority = 'javbus+jav321,mgstage,avsox,javdb,arzon,fanza,xcity,dlsite,fc2'
+_priority = 'javbus,avsox,javdb,arzon,fc2'
 
 
 def _is_in_s_list(keyword: str) -> bool:
@@ -91,15 +77,8 @@ def _getSources(keyword: str) -> list[str]:
     #                            "HEYZO" in keyword.upper() or "BD" in keyword.upper()):
     #     sources.insert(0, sources.pop(sources.index("avsox")))
 
-    if "mgstage" in sources and (re.match(r"\d+[a-zA-Z]+", keyword) or
-                                 _is_in_s_list(keyword)):
-        sources.insert(0, sources.pop(sources.index("mgstage")))
-
     if "fc2" in sources and "FC2" in keyword.upper():
         sources.insert(0, sources.pop(sources.index("fc2")))
-
-    if "dlsite" in sources and "RJ" in keyword.upper():
-        sources.insert(0, sources.pop(sources.index("dlsite")))
 
     return sources
 
