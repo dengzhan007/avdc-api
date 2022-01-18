@@ -9,7 +9,7 @@ from avdc.model.metadata import Metadata
 from avdc.utility.httpclient import get_html
 from avdc.utility.misc import concurrentMap, extractTitle
 
-BASE_URL = 'https://www.busfan.fun/ja'
+BASE_URL = 'https://www.busdmm.fun/ja'
 
 
 def getCover(text: str) -> str:  # 获取封面链接
