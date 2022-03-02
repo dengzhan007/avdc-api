@@ -14,11 +14,12 @@ def getTitle(a: str) -> str:
 
 def getActresses(a: str) -> list[str]:  # //*[@id="center_column"]/div[2]/div[1]/div/table/tbody/tr[1]/td/text()
     html = etree.fromstring(a, etree.HTMLParser())  # //table/tr[1]/td[1]/text()
-    result1 = str(html.xpath('//strong[contains(text(),"演員")]/../span/text()')).strip(" ['']")
-    result2 = str(html.xpath('//strong[contains(text(),"演員")]/../span/a/text()')).strip(" ['']")
-    actresses = str(result1 + result2).strip('+').replace(",\\xa0", "").replace("'", ""). \
-        replace(' ', '').replace(',,', '').replace('N/A', '').lstrip(',').replace(',', ', ')
-    return [i.strip() for i in actresses.split(',')]
+    result1 = html.xpath('//strong[contains(text(),"演員")]/../span/text()')
+    result2 = html.xpath('//strong[contains(text(),"演員")]/../span/a/text()')
+    # actresses = str(result1 + result2).strip('+').replace(",\\xa0", "").replace("'", ""). \
+    #     replace(' ', '').replace(',,', '').replace('N/A', '').lstrip(',').replace(',', ', ')
+    return [i.replace('N/A', '').strip('+').strip() for i in result1 + result2
+            if i.replace('N/A', '').strip('+').strip()]
 
 
 def getOnePhoto(url: str) -> str:
@@ -41,7 +42,7 @@ def getActressPhoto(html: str) -> dict:  # //*[@id="star_qdt"]/li/a/img
         actresses = ar.findall(item)
         star_photos = {}
         for i in actresses:
-            star_photos[i[1]] = getOnePhoto('https://javdb30.com' + i[0])
+            star_photos[i[1]] = getOnePhoto('https://javdb.com' + i[0])
         return star_photos
     else:
         return {}
@@ -169,7 +170,7 @@ def getSeries(a: str) -> str:
 
 def main(keyword: str) -> Metadata:
     keyword = keyword.upper()
-    query_result = get_html('https://javdb30.com/search?q=' + keyword + '&f=all')
+    query_result = get_html('https://javdb.com/search?q=' + keyword + '&f=all')
 
     html = etree.fromstring(query_result, etree.HTMLParser())  # //table/tr[1]/td[1]/text()
     # javdb sometime returns multiple results,
@@ -184,7 +185,7 @@ def main(keyword: str) -> Metadata:
         ids = html.xpath('//*[@id="videos"]/div/div/a/div[contains(@class, "uid")]/text()')
         correct_url = urls[ids.index(keyword)]
 
-    detail_page = get_html('https://javdb30.com' + correct_url, params={'locale': 'zh'})
+    detail_page = get_html('https://javdb.com' + correct_url, params={'locale': 'zh'})
 
     # no cut image by default
     # If gray image exists ,then replace with normal cover
@@ -217,7 +218,7 @@ def main(keyword: str) -> Metadata:
         'genres': getGenres(detail_page),
         'label': getLabel(detail_page),
         # 'star_photos': getActressPhoto(detail_page),
-        'source': 'https://javdb30.com' + correct_url,
+        'source': 'https://javdb.com' + correct_url,
         'provider': 'javdb',
         'series': getSeries(detail_page),
     })
@@ -229,4 +230,4 @@ if __name__ == "__main__":
     # print(main('BANK-022'))
     # print(main('MIAE-003'))
     # print(main('ABW-065'))
-    print(main('mide-460'))
+    print(main('021022_001'))
